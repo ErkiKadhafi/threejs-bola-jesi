@@ -84,13 +84,14 @@ function main() {
     let timer = 1000;
 
     //make ball
+    const objLeft = document.querySelector(".countNum");
     function makeBall() {
         const radius = 5.0;
         const detail = 5;
         addGeometry(
-            xPos + (Math.random()/2) - 2.5,
+            xPos + Math.random() / 2 - 2.5,
             yPos - 2,
-            zPos+ (Math.random()/2) - 2.5,
+            zPos + Math.random() / 2 - 2.5,
             30,
             new THREE.DodecahedronGeometry(radius, detail),
             new THREE.MeshPhongMaterial({
@@ -99,17 +100,18 @@ function main() {
             })
         );
         xPos++;
-        
+
         if (xPos % 6 == 0 && xPos != 0) {
             xPos = 0;
             zPos++;
         }
 
         count++;
+        objLeft.innerHTML = count;
         if (count % 36 == 0 && count != 0) {
             xPos = 0;
             zPos = 0;
-            yPos+=1.5;
+            yPos += 1.5;
         }
         if (count < 216) {
             timer = (timer / 10) * 9;
@@ -149,17 +151,18 @@ function main() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     const scoreBoard = document.querySelector(".score");
-    const objLeft = document.querySelector(".countNum");
+
     let selectedPiece1,
         selectedPiece2,
         score = 0,
-        countLeft = 216;
+        countdown = count;
 
     function onMouseMove(event) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
 
+    const correctSound = document.querySelector(".correct-sound");
     function resetMaterials() {
         for (let i = 0; i < scene.children.length; i++) {
             if (scene.children[i].material) {
@@ -168,15 +171,16 @@ function main() {
                         selectedPiece1.material.color.getHex() ===
                         selectedPiece2.material.color.getHex()
                     ) {
+                        correctSound.play();
                         console.log(selectedPiece1.material.color.getHex());
                         console.log(selectedPiece2.material.color.getHex());
 
                         scene.remove(selectedPiece1);
                         scene.remove(selectedPiece2);
                         score++;
-                        countLeft -= 2;
+                        countdown -= 2;
                         scoreBoard.innerHTML = score;
-                        objLeft.innerHTML = countLeft;
+                        objLeft.innerHTML = count;
                     }
                     selectedPiece1 = null;
                     selectedPiece2 = null;
@@ -205,10 +209,12 @@ function main() {
         }
     }
 
+    const clickSound = document.querySelector(".click-sound");
     function onClick() {
         raycaster.setFromCamera(mouse, camera);
         const intersects = raycaster.intersectObjects(scene.children);
         if (intersects.length > 0) {
+            clickSound.play();
             if (!selectedPiece1 && !selectedPiece2) {
                 selectedPiece1 = intersects[0].object;
             } else if (

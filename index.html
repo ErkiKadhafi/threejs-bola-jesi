@@ -12,12 +12,16 @@
             href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
             rel="stylesheet"
         />
-        <title>Latian three.js</title>
+        <title>Three.js Interactions</title>
     </head>
     <body>
         <h1 class="scoreboard">Score: <span class="score">0</span></h1>
-        <h1 class="countdown">Object Left: <span class="countNum">216</span></h1>
+        <h1 class="countdown">
+            Object Remains: <span class="countNum">0</span>
+        </h1>
         <canvas id="myCanvas"></canvas>
+        <audio class="click-sound" src="./sounds/clicked.wav"></audio>
+        <audio class="correct-sound" src="./sounds/correct.wav"></audio>
         <script type="module" src="./script.js"></script>
     </body>
 </html>
