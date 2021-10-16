@@ -61,11 +61,30 @@ function main() {
     //make plane 1
     let plane;
     {
-        const width = 180;
-        const height = 5;
-        const depth = 180;
+        // const width = 180;
+        // const height = 5;
+        // const depth = 180;
+        // plane = new THREE.Mesh(
+        //     new THREE.BoxGeometry(width, height, depth),
+        // new THREE.MeshStandardMaterial({
+        //     color: "#5E454B",
+        //     roughness: 0.55,
+        //     metalness: 1,
+        //     side: THREE.DoubleSide,
+        //     emissive: 0x807d7d,
+        // })
+        // );
+        const radiusTop = 120.0;
+        const radiusBottom = 120.0;
+        const height = 10.0;
+        const radialSegments = 50;
         plane = new THREE.Mesh(
-            new THREE.BoxGeometry(width, height, depth),
+            new THREE.CylinderGeometry(
+                radiusTop,
+                radiusBottom,
+                height,
+                radialSegments
+            ),
             new THREE.MeshStandardMaterial({
                 color: "#5E454B",
                 roughness: 0.55,
@@ -82,6 +101,7 @@ function main() {
     let zPos = 0;
     let count = 0;
     let timer = 1000;
+    let score = 0;
 
     //make ball
     const objLeft = document.querySelector(".countNum");
@@ -113,7 +133,7 @@ function main() {
             zPos = 0;
             yPos += 1.5;
         }
-        if (count < 216) {
+        if (count < 216 - score * 2) {
             timer = (timer / 10) * 9;
             setTimeout(makeBall, timer);
         }
@@ -152,10 +172,7 @@ function main() {
     const mouse = new THREE.Vector2();
     const scoreBoard = document.querySelector(".score");
 
-    let selectedPiece1,
-        selectedPiece2,
-        score = 0,
-        countdown = count;
+    let selectedPiece1, selectedPiece2;
 
     function onMouseMove(event) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -178,9 +195,10 @@ function main() {
                         scene.remove(selectedPiece1);
                         scene.remove(selectedPiece2);
                         score++;
+                        let countdown = document.querySelector(".countNum");
                         countdown -= 2;
                         scoreBoard.innerHTML = score;
-                        objLeft.innerHTML = count;
+                        objLeft.innerHTML = countdown;
                     }
                     selectedPiece1 = null;
                     selectedPiece2 = null;
