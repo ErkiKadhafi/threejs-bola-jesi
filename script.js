@@ -195,10 +195,9 @@ function main() {
                         scene.remove(selectedPiece1);
                         scene.remove(selectedPiece2);
                         score++;
-                        let countdown = document.querySelector(".countNum");
-                        countdown -= 2;
+                        count -= 2;
                         scoreBoard.innerHTML = score;
-                        objLeft.innerHTML = countdown;
+                        objLeft.innerHTML = count;
                     }
                     selectedPiece1 = null;
                     selectedPiece2 = null;
